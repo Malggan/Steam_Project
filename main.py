@@ -3,7 +3,6 @@ from fastapi.responses import HTMLResponse
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
-import dask.dataframe as dd
 
 app = FastAPI()
 
@@ -64,27 +63,20 @@ def user_data(usuario):
 
 
 def user_for_genre(genero):
-    # Leer el DataFrame usando Dask
-    ddf = dd.read_parquet('Dataset/user_for_genre.parquet')
-    
-    # Filtrar por género
-    ddf_genero = ddf[ddf['genres'] == genero]
-    
-    # Usuario con más horas jugadas por género
-    usuario_mas_horas = ddf_genero.groupby('user_id')['playtime_forever'].sum().idxmax().compute()
-    
-    # Filtrar por el usuario con más horas jugadas
-    df_usuario_mas_horas = ddf_genero[ddf_genero['user_id'] == usuario_mas_horas].compute()
-    
-    # Calcular las horas jugadas por año de lanzamiento
+    df_user_genre = load_user_genre()
+    df_genero = df_user_genre[df_user_genre['genres'] == genero]
+
+    usuario_mas_horas = df_genero.groupby('user_id')['playtime_forever'].sum().idxmax()
+    usuario_mas_horas_df = df_genero[df_genero['user_id'] == usuario_mas_horas].iloc[0]
+
+    df_usuario_mas_horas = df_genero[df_genero['user_id'] == usuario_mas_horas]
     horas_por_anio = df_usuario_mas_horas.groupby('release_year')['playtime_forever'].sum().to_dict()
-    
-    if usuario_mas_horas is None:
-        return {"Error": "No se encontraron usuarios para el género proporcionado."}
-    
-    return {"Usuario con más horas jugadas por género": usuario_mas_horas, 
-            "Género": genero, 
-            "Horas jugadas por año de lanzamiento": horas_por_anio}
+
+    return {
+        "Usuario con más horas jugadas por género": usuario_mas_horas_df['user_id'], 
+        "Género": usuario_mas_horas_df['genres'], 
+        "Horas jugadas por año de lanzamiento": horas_por_anio
+    }
 
 
 def best_developer_year(year):
