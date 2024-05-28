@@ -1,8 +1,9 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 import pandas as pd
 import numpy as np
 from sklearn.metrics.pairwise import cosine_similarity
+import dask.dataframe as dd
 
 app = FastAPI()
 
