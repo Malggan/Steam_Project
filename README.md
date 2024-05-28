@@ -152,4 +152,4 @@ El desarrollo de las funciones de consultas generales se puede ver en: [main.py]
 
 Para el deploy de la API se decidió crear un nuevo repositorio [repo_render](https://github.com/SebitaElGordito/PI_render). que contara solo con las funciones a consumir en la API, liberandonos de las carpetas o jupiters notebooks innecesarios y desplegandolo a partir de nuestro repositorio en GitHub. 
 - Se generó un servicio nuevo  en `render.com`, conectado al presente repositorio.
-- El servicio queda corriendo en [https://pi-render-tt44.onrender.com/](https://steam-project-p66a.onrender.com/docs).
+- El servicio queda corriendo en [https://steam-project-p66a.onrender.com](https://steam-project-p66a.onrender.com/docs).
