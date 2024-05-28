@@ -44,7 +44,7 @@ def user_data(usuario):
     if not user_filtrado.empty:
         # Convertir los valores de NumPy a tipos nativos de Python usando int() y float()
         cantidad_dinero = int(user_filtrado['total_spent'].iloc[0])
-        items_totales = int(user_filtrado['items_count'].iloc[0])
+        items_totales = int(user_filtrado['item_count'].iloc[0])
         total_recomendaciones = float(user_filtrado['recommend'].iloc[0])
 
         return {
